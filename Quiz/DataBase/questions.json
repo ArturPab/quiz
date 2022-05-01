@@ -1,0 +1,58 @@
+[
+  {
+    "QuestionContent": "Jakie zwierze przenosi malarie?",
+    "AnswerA": "komar",
+    "AnswerB": "mrówka",
+    "AnswerC": "mucha",
+    "AnswerD": "pies",
+    "CorrectAnswer": "komar"
+  },
+  {
+    "QuestionContent": "Tradycyjnie na  wigilijnym stole króluje:",
+    "AnswerA": "Okoñ",
+    "AnswerB": "Troæ",
+    "AnswerC": "Karp",
+    "AnswerD": "P³oæ",
+    "CorrectAnswer": "Karp"
+  },
+  {
+    "QuestionContent": "Ciut to nie:",
+    "AnswerA": "W bród",
+    "AnswerB": "Zdziebko",
+    "AnswerC": "Krztyna",
+    "AnswerD": "Ociupina",
+    "CorrectAnswer": "W bród"
+  },
+  {
+    "QuestionContent": "Droga krzy¿owa dzieli siê na:",
+    "AnswerA": "Haramy",
+    "AnswerB": "Stacje",
+    "AnswerC": "Misje",
+    "AnswerD": "Sanktuaria",
+    "CorrectAnswer": "Stacje"
+  },
+  {
+    "QuestionContent": "Kto wygra³ w karty dwa patyki, ten jest bogatszy o:",
+    "AnswerA": "Dwa z³ote",
+    "AnswerB": "Dwa tysi¹ce z³otych",
+    "AnswerC": "Dwieœcie z³otych",
+    "AnswerD": "Dwadzieœcia tysiêcy z³otych",
+    "CorrectAnswer": "Dwa tysi¹ce z³otych"
+  },
+  {
+    "QuestionContent": "Rodzinna wyspa Boba Marleya to:",
+    "AnswerA": "Jamajka",
+    "AnswerB": "Kuba",
+    "AnswerC": "Sumatra",
+    "AnswerD": "Cejlon",
+    "CorrectAnswer": "Jamajka"
+  },
+  {
+    "QuestionContent": "Które cia³o sta³e ma najmniejsz¹ gêstoœæ:",
+    "AnswerA": "Drewno",
+    "AnswerB": "Piasek",
+    "AnswerC": "Beton",
+    "AnswerD": "Szk³o",
+    "CorrectAnswer": "Drewno"
+  }
+]
