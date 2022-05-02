@@ -10,10 +10,13 @@
         Title="Quiz" Height="800" Width="1000">
     <Window.Resources>
         <DataTemplate DataType="{x:Type viewModel:MenuViewModel}">
-            <view:Menu/>
+            <view:MenuView/>
         </DataTemplate>
-        <DataTemplate DataType="{x:Type viewModel:QuestionViewModel}">
-            <view:QuestionView/>
+        <DataTemplate DataType="{x:Type viewModel:PlayViewModel}">
+            <view:PlayView/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type viewModel:SettingsViewModel}">
+            <view:SettingsView/>
         </DataTemplate>
     </Window.Resources>
     <DockPanel LastChildFill="True">

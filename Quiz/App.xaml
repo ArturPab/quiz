@@ -12,11 +12,11 @@
             </ResourceDictionary.MergedDictionaries>
 
             <DataTemplate DataType="{x:Type viewModel:MenuViewModel}">
-                <view:Menu />
+                <view:MenuView />
             </DataTemplate>
 
-            <DataTemplate DataType="{x:Type viewModel:QuestionViewModel}">
-                <view:QuestionView />
+            <DataTemplate DataType="{x:Type viewModel:PlayViewModel}">
+                <view:PlayView />
             </DataTemplate>
         </ResourceDictionary>
     </Application.Resources>

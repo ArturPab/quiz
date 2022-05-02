@@ -1,30 +1,28 @@
 ﻿using Quiz.Core;
-using Quiz.MVVM.View;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Controls;
 using System.Windows.Input;
-using System.Windows.Navigation;
 
 namespace Quiz.MVVM.ViewModel
 {
     internal class MenuViewModel : ObservableObject
     {
-        public ICommand QuestionCommand { get; set; }
+        public ICommand PlayCommand { get; set; }
+        public ICommand SettingsCommand { get; set; }
         private readonly NavigationViewModel _navigationViewModel;
 
         public MenuViewModel(NavigationViewModel navigationViewModel)
         {
             _navigationViewModel = navigationViewModel;
-            QuestionCommand = new RelayCommand(OpenQuestionView);
+            PlayCommand = new RelayCommand(OpenPlayView);
+            SettingsCommand = new RelayCommand(OpenSettingsView);
         }
 
-        private void OpenQuestionView(object obj)
+        private void OpenPlayView(object obj)
         {
-            _navigationViewModel.SelectedViewModel = new QuestionViewModel();
+            _navigationViewModel.SelectedViewModel = new PlayViewModel();
+        }
+        private void OpenSettingsView(object obj)
+        {
+            _navigationViewModel.SelectedViewModel = new SettingsViewModel();
         }
     }
 }

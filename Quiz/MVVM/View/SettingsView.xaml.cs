@@ -1,5 +1,4 @@
-﻿using Quiz.MVVM.ViewModel;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -17,11 +16,11 @@ using System.Windows.Shapes;
 namespace Quiz.MVVM.View
 {
     /// <summary>
-    /// Interaction logic for Menu.xaml
+    /// Interaction logic for SettingsView.xaml
     /// </summary>
-    public partial class Menu : UserControl
+    public partial class SettingsView : UserControl
     {
-        public Menu()
+        public SettingsView()
         {
             InitializeComponent();
         }

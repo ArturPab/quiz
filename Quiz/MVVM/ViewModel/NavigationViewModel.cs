@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel;
 
 namespace Quiz.MVVM.ViewModel
 {
@@ -13,10 +8,7 @@ namespace Quiz.MVVM.ViewModel
 
         public object SelectedViewModel
         {
-            get
-            {
-                return selectedViewModel;
-            }
+            get => selectedViewModel;
             set
             {
                 selectedViewModel = value;
