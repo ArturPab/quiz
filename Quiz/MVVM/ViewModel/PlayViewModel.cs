@@ -1,15 +1,13 @@
 ﻿using Newtonsoft.Json;
 using Quiz.MVVM.Model;
-using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Quiz.MVVM.ViewModel
 {
-    internal class QuestionViewModel
+    internal class PlayViewModel
     {
         private const string _questionsPath = @"../../../DataBase/questions.json";
         private readonly List<Question> _questions;
@@ -20,7 +18,7 @@ namespace Quiz.MVVM.ViewModel
         public string QuestionBox { get; set; }
 
 
-        public QuestionViewModel()
+        public PlayViewModel()
         {
             _questions = LoadQuestions().ToList();
             _currentQuestionIndex = 0;
@@ -40,13 +38,10 @@ namespace Quiz.MVVM.ViewModel
 
         private void NextQuestion()
         {
-            if (_currentQuestionIndex + 1 < _questions.Count)
-            {
-                _currentQuestionIndex++;
-                DisplayCurrentQuestionOnScreen();
-                return;
-            }
-            //todo Display end screen
+            if (_currentQuestionIndex + 1 >= _questions.Count) return;
+            _currentQuestionIndex++;
+            DisplayCurrentQuestionOnScreen();
+            return;
         }
 
         private void DisplayCurrentQuestionOnScreen()
