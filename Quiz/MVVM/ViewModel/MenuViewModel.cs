@@ -19,7 +19,7 @@ namespace Quiz.MVVM.ViewModel
 
         private void OpenPlayView(object obj)
         {
-            _navigationViewModel.SelectedViewModel = new PlayViewModel();
+            _navigationViewModel.SelectedViewModel = new PlayViewModel(new DatabaseTools(), _navigationViewModel);
         }
         private void OpenSettingsView(object obj)
         {

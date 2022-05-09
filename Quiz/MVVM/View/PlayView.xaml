@@ -3,12 +3,9 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:Quiz.MVVM.View" xmlns:viewModel="clr-namespace:Quiz.MVVM.ViewModel"
+             xmlns:local="clr-namespace:Quiz.MVVM.View" xmlns:viewModel="clr-namespace:Quiz.MVVM.ViewModel" d:DataContext="{d:DesignInstance Type=viewModel:PlayViewModel}"
              mc:Ignorable="d" 
              d:DesignHeight="800" d:DesignWidth="1000">
-    <UserControl.DataContext>
-        <viewModel:PlayViewModel />
-    </UserControl.DataContext>
 
     <Grid>
         <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Stretch" Background="#FF121A58">
@@ -23,7 +20,7 @@
 
             <Image Source="/src/urban.jpg"/>
             <Grid Height="100">
-                <TextBlock Name="QuestionBox" FontSize="24" Foreground="White" TextAlignment="Center" TextWrapping="Wrap" Text="Ile kurczaków dziennie sprzedaje Ada Rzepka?" VerticalAlignment="Center" HorizontalAlignment="Stretch"/>
+                <TextBlock Name="QuestionBox" FontSize="24" Foreground="White" TextAlignment="Center" TextWrapping="Wrap" Text="{Binding QuestionBox}" VerticalAlignment="Center" HorizontalAlignment="Stretch"/>
             </Grid>
 
             <Grid Height="100">
@@ -35,10 +32,10 @@
                     <ColumnDefinition/>
                     <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
-                <Button x:Name="AnswerButtonA" Grid.Row="0" Grid.Column="0" Style="{StaticResource button}" />
-                <Button x:Name="AnswerButtonB" Grid.Row="0" Grid.Column="1" Style="{StaticResource button}" />
-                <Button x:Name="AnswerButtonC" Grid.Row="1" Grid.Column="0" Style="{StaticResource button}" />
-                <Button x:Name="AnswerButtonD" Grid.Row="1" Grid.Column="1" Style="{StaticResource button}" />
+                <Button CommandParameter="{Binding AnswerA}" Grid.Row="0" Grid.Column="0" Style="{StaticResource button}" Content="{Binding AnswerA}" Command="{Binding CheckAnswerCommand}"/>
+                <Button CommandParameter="{Binding AnswerB}" Grid.Row="0" Grid.Column="1" Style="{StaticResource button2}" Content="{Binding AnswerB}" Command="{Binding CheckAnswerCommand}"/>
+                <Button CommandParameter="{Binding AnswerC}" Grid.Row="1" Grid.Column="0" Style="{StaticResource button3}" Content="{Binding AnswerC}" Command="{Binding CheckAnswerCommand}"/>
+                <Button CommandParameter="{Binding AnswerD}" Grid.Row="1" Grid.Column="1" Style="{StaticResource button4}" Content="{Binding AnswerD}" Command="{Binding CheckAnswerCommand}"/>
             </Grid>
         </StackPanel>
     </Grid>
