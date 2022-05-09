@@ -14,9 +14,9 @@ namespace Quiz.DataBase
     {
         private static readonly string _questionsPath = @"..\..\..\DataBase\questions.json";
         public List<Question> Questions { get; set; } = LoadQuestions();
-        public static List<Question> LoadQuestions()
+        private static List<Question> LoadQuestions()
         {
-            using var reader = new StreamReader(_questionsPath, Encoding.Default);
+            using var reader = new StreamReader(_questionsPath);
             var json = reader.ReadToEnd();
             var questions = JsonConvert.DeserializeObject<List<Question>>(json);
 
@@ -26,7 +26,7 @@ namespace Quiz.DataBase
         public void Save()
         {
             var json = JsonConvert.SerializeObject(Questions);
-            File.WriteAllText(_questionsPath, json, Encoding.Default);
+            File.WriteAllText(_questionsPath, json);
         }
     }
 }
