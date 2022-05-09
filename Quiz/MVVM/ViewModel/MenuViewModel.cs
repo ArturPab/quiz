@@ -1,4 +1,5 @@
-﻿using Quiz.Core;
+﻿using System.Threading.Channels;
+using Quiz.Core;
 using System.Windows.Input;
 using Quiz.DataBase;
 
@@ -23,7 +24,7 @@ namespace Quiz.MVVM.ViewModel
         }
         private void OpenSettingsView(object obj)
         {
-            _navigationViewModel.SelectedViewModel = new SettingsViewModel(new DatabaseTools());
+            _navigationViewModel.SelectedViewModel = new SettingsViewModel(new DatabaseTools(), _navigationViewModel);
         }
     }
 }
