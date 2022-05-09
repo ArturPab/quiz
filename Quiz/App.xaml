@@ -18,6 +18,10 @@
             <DataTemplate DataType="{x:Type viewModel:PlayViewModel}">
                 <view:PlayView />
             </DataTemplate>
+
+            <DataTemplate DataType="{x:Type viewModel:SettingsViewModel}">
+                <view:SettingsView />
+            </DataTemplate>
         </ResourceDictionary>
     </Application.Resources>
 </Application>
