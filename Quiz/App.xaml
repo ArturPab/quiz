@@ -22,6 +22,10 @@
             <DataTemplate DataType="{x:Type viewModel:SettingsViewModel}">
                 <view:SettingsView />
             </DataTemplate>
+
+            <DataTemplate DataType="{x:Type viewModel:EndScreenViewModel}">
+                <view:EndScreenView />
+            </DataTemplate>
         </ResourceDictionary>
     </Application.Resources>
 </Application>

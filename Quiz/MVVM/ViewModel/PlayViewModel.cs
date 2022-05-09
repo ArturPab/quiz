@@ -1,104 +1,273 @@
 ﻿using Newtonsoft.Json;
+using Quiz.Core;
+using Quiz.DataBase;
 using Quiz.MVVM.Model;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Input;
+using System.Windows.Media;
 
 namespace Quiz.MVVM.ViewModel
 {
-    internal class PlayViewModel
+    internal class PlayViewModel : ObservableObject
     {
         private const string _questionsPath = @"../../../DataBase/questions.json";
-        private readonly List<Question> _questions;
-        private int _currentQuestionIndex;
-        private readonly int _correctAnswer = 0;
-        public string CorrectAnswerCounter { get; set; }
-        public string QuestionNumber { get; set; }
-        public string QuestionBox { get; set; }
+        private readonly DatabaseTools _questions;
+        private int _correctAnswer = 0;
+        private string _correctAnswerCounter;
+        private string _questionNumber;
+        private string _questionBox;
+        private string _content = string.Empty;
+        private string _answerA = string.Empty;
+        private string _answerB = string.Empty;
+        private string _answerC = string.Empty;
+        private string _answerD = string.Empty;
+        private string _IsCorrectAnswerA = "0";
+        private string _IsCorrectAnswerB = "0";
+        private string _IsCorrectAnswerC = "0";
+        private string _IsCorrectAnswerD = "0";
+        private readonly NavigationViewModel _navigationViewModel;
 
-
-        public PlayViewModel()
+        public string CorrectAnswerCounter
         {
-            _questions = LoadQuestions().ToList();
-            _currentQuestionIndex = 0;
-
-            DisplayCurrentQuestionOnScreen();
-        }
-
-        private static IEnumerable<Question> LoadQuestions()
-        {
-            using (var reader = new StreamReader(_questionsPath, Encoding.Default))
+            get { return _correctAnswerCounter; }
+            set
             {
-                var json = reader.ReadToEnd();
-                var questions = JsonConvert.DeserializeObject<List<Question>>(json);
-                return questions;
+                _correctAnswerCounter = value;
+                OnPropertyChanged(nameof(CorrectAnswerCounter));
+            }
+        }
+        public string QuestionNumber
+        {
+            get { return _questionNumber; }
+            set
+            {
+                _questionNumber = value;
+                OnPropertyChanged(nameof(QuestionNumber));
+            }
+        }
+        public string QuestionBox
+        {
+            get { return _questionBox; }
+            set
+            {
+                _questionBox = value;
+                OnPropertyChanged(nameof(QuestionBox));
             }
         }
 
-        private void NextQuestion()
+        public int CorrectAnswer
         {
-            if (_currentQuestionIndex + 1 >= _questions.Count) return;
-            _currentQuestionIndex++;
+            get { return _correctAnswer; }
+            set
+            {
+                _correctAnswer = value;
+                OnPropertyChanged(nameof(CorrectAnswer));
+            }
+        }
+
+        public string IsCorrectAnswerA
+        {
+            get
+            {
+                return _IsCorrectAnswerA;
+            }
+            set
+            {
+                _IsCorrectAnswerA = value;
+                OnPropertyChanged(nameof(IsCorrectAnswerA));
+            }
+        }
+
+        public string IsCorrectAnswerB
+        {
+            get
+            {
+                return _IsCorrectAnswerB;
+            }
+            set
+            {
+                _IsCorrectAnswerB = value;
+                OnPropertyChanged(nameof(IsCorrectAnswerB));
+            }
+        }
+        public string IsCorrectAnswerC
+        {
+            get
+            {
+                return _IsCorrectAnswerC;
+            }
+            set
+            {
+                _IsCorrectAnswerC = value;
+                OnPropertyChanged(nameof(IsCorrectAnswerC));
+            }
+        }
+        public string IsCorrectAnswerD
+        {
+            get
+            {
+                return _IsCorrectAnswerD;
+            }
+            set
+            {
+                _IsCorrectAnswerD = value;
+                OnPropertyChanged(nameof(IsCorrectAnswerD));
+            }
+        }
+
+        public ICommand ItemChangedCommand { get; set; }
+        public ICommand CheckAnswerCommand { get; set; }
+
+        public PlayViewModel(DatabaseTools questions, NavigationViewModel navigationViewModel)
+        {
+            _questions = questions;
+            CheckAnswerCommand = new RelayCommand(CheckAnswer);
+            _navigationViewModel = navigationViewModel;
+
             DisplayCurrentQuestionOnScreen();
-            return;
+        }
+
+        private void OpenEndScreenView()
+        {
+            _navigationViewModel.SelectedViewModel = new EndScreenViewModel(_navigationViewModel, CorrectAnswer);
+        }
+
+        public List<string> QuestionsForView => _questions.Questions.Select(q => q.QuestionContent).ToList();
+        public int CurrentIndex { get; set; } = 0;
+
+        public string Content
+        {
+            get => _content;
+            set
+            {
+                _content = value;
+                OnPropertyChanged(nameof(Content));
+            }
+        }
+
+        public string AnswerA
+        {
+            get => _answerA;
+            set
+            {
+                _answerA = value;
+                OnPropertyChanged(nameof(AnswerA));
+            }
+        }
+
+        public string AnswerB
+        {
+            get => _answerB;
+            set
+            {
+                _answerB = value;
+                OnPropertyChanged(nameof(AnswerB));
+            }
+        }
+
+        public string AnswerC
+        {
+            get => _answerC;
+            set
+            {
+                _answerC = value;
+                OnPropertyChanged(nameof(AnswerC));
+            }
+        }
+
+        public string AnswerD
+        {
+            get => _answerD;
+            set
+            {
+                _answerD = value;
+                OnPropertyChanged(nameof(AnswerD));
+            }
         }
 
         private void DisplayCurrentQuestionOnScreen()
         {
+            var question = _questions.Questions[CurrentIndex];
+            Content = question.QuestionContent;
+            AnswerA = question.AnswerA;
+            AnswerB = question.AnswerB;
+            AnswerC = question.AnswerC;
+            AnswerD = question.AnswerD;
+            CorrectAnswerCounter = $"Poprawe odpowiedzi: {CorrectAnswer}";
+            QuestionNumber = $"Pytanie: {CurrentIndex + 1}/{_questions.Questions.Count}";
 
-            CorrectAnswerCounter = $"Poprawe odpowiedzi: {_correctAnswer}";
-            QuestionNumber = $"Pytanie: {_currentQuestionIndex + 1}/{_questions.Count}";
-
-            var currentQuestion = _questions[_currentQuestionIndex];
+            var currentQuestion = _questions.Questions[CurrentIndex];
 
 
             // Set question content
 
             QuestionBox = currentQuestion.QuestionContent;
+        }
 
+        private async void CheckAnswer(object param)
+        {
+            string? answer = param as string;
+            var correctAnswer = _questions.Questions[CurrentIndex].CorrectAnswer;
+            int questionListLength = _questions.Questions.Count;
+            if (answer == correctAnswer)
+            {
+                CorrectAnswer += 1;
+                CorrectAnswerCounter = $"Poprawe odpowiedzi: {CorrectAnswer}";
+            }
 
-            // Set background default background color for all answers buttons
+            ChangeColorValue(answer, AnswerA, correctAnswer);
+            ChangeColorValue(answer, AnswerB, correctAnswer);
+            ChangeColorValue(answer, AnswerC, correctAnswer);
+            ChangeColorValue(answer, AnswerD, correctAnswer);
 
-            //AnswerButtonA.ClearValue(BackgroundProperty);
-            //AnswerButtonB.ClearValue(BackgroundProperty);
-            //AnswerButtonC.ClearValue(BackgroundProperty);
-            //AnswerButtonD.ClearValue(BackgroundProperty);
+            await Task.Delay(2000);
 
+            if (CurrentIndex+1 == questionListLength)
+            {
+                OpenEndScreenView();
+            }
+            else
+            {
+                nextQuestion();
+            }
+        }
 
-            // Set content for all answers buttons
+        private void nextQuestion()
+        {
+            CurrentIndex += 1;
+            IsCorrectAnswerA = "0";
+            IsCorrectAnswerB = "0";
+            IsCorrectAnswerC = "0";
+            IsCorrectAnswerD = "0";
+            DisplayCurrentQuestionOnScreen();
+        }
 
-            //    AnswerButtonA.Content = $"A. {currentQuestion.AnswerA}";
-            //    AnswerButtonA.Tag = currentQuestion.AnswerA;
-
-            //    AnswerButtonB.Content = $"B. {currentQuestion.AnswerB}";
-            //    AnswerButtonB.Tag = currentQuestion.AnswerB;
-
-            //    AnswerButtonC.Content = $"C. {currentQuestion.AnswerC}";
-            //    AnswerButtonC.Tag = currentQuestion.AnswerC;
-
-            //    AnswerButtonD.Content = $"D. {currentQuestion.AnswerD}";
-            //    AnswerButtonD.Tag = currentQuestion.AnswerD;
-            //}
-
-            //private async void CheckAnswer(object sender, RoutedEventArgs e)
-            //{
-            //    var correctAnswer = _questions[_currentQuestionIndex].CorrectAnswer;
-            //    var button = sender as Button;
-            //    var buttonAnswer = button?.Tag.ToString();
-            //    if (buttonAnswer == correctAnswer)
-            //    {
-            //        _correctAnswer++;
-            //    }
-
-            //    AnswerButtonA.Background = AnswerButtonA.Tag.ToString() == correctAnswer ? Brushes.Green : Brushes.Red;
-            //    AnswerButtonB.Background = AnswerButtonB.Tag.ToString() == correctAnswer ? Brushes.Green : Brushes.Red;
-            //    AnswerButtonC.Background = AnswerButtonC.Tag.ToString() == correctAnswer ? Brushes.Green : Brushes.Red;
-            //    AnswerButtonD.Background = AnswerButtonD.Tag.ToString() == correctAnswer ? Brushes.Green : Brushes.Red;
-
-            //    await Task.Delay(2000);
-            //    NextQuestion();
-            //}
+        private void ChangeColorValue(string? selectedAnswer, string answer, string correctAnswer)
+        {
+            if (answer == selectedAnswer)
+            {
+                if (AnswerA == answer)
+                {
+                    IsCorrectAnswerA = correctAnswer == AnswerA ? "1" : "2";
+                }
+                else if (AnswerB == answer)
+                {
+                    IsCorrectAnswerB = correctAnswer == AnswerB ? "1" : "2";
+                }
+                else if (AnswerC == answer)
+                {
+                    IsCorrectAnswerC = correctAnswer == AnswerC ? "1" : "2";
+                }
+                else
+                {
+                    IsCorrectAnswerD = correctAnswer == AnswerD ? "1" : "2";
+                }
+            }
         }
     }
 }
