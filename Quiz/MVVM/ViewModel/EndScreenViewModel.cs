@@ -11,13 +11,15 @@ namespace Quiz.MVVM.ViewModel
     internal class EndScreenViewModel : ObservableObject
     {
         public string ResultText { get; set; }
+        public string ResultTime { get; set; }
 
         private readonly NavigationViewModel _navigationViewModel;
 
-        public EndScreenViewModel(NavigationViewModel navigationViewModel, int points)
+        public EndScreenViewModel(NavigationViewModel navigationViewModel, int points, string currentTimer)
         {
             _navigationViewModel = navigationViewModel;
             ResultText = $"Liczba punktów: {points}";
+            ResultTime = $"Czas: {currentTimer}";
             OpenMenuView();
         }
 

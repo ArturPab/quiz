@@ -10,6 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Threading;
 
 namespace Quiz.MVVM.ViewModel
 {
@@ -31,6 +32,7 @@ namespace Quiz.MVVM.ViewModel
         private string _IsCorrectAnswerC = "0";
         private string _IsCorrectAnswerD = "0";
         private readonly NavigationViewModel _navigationViewModel;
+        private readonly DispatcherTimer _timer;
 
         public string CorrectAnswerCounter
         {
@@ -128,13 +130,24 @@ namespace Quiz.MVVM.ViewModel
             _questions = questions;
             CheckAnswerCommand = new RelayCommand(CheckAnswer);
             _navigationViewModel = navigationViewModel;
+            _timer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(1) };
+            StartedTime = DateTime.Now;
+            _timer.Tick += (o, e) => OnPropertyChanged("CurrentTimer");
+            _timer.Start();
 
             DisplayCurrentQuestionOnScreen();
         }
 
+        public DateTime StartedTime { get; set; }
+
+         public string CurrentTimer
+        {
+            get { return DateTime.Now.Subtract(StartedTime).ToString(@"hh\:mm\:ss"); }
+        }
+
         private void OpenEndScreenView()
         {
-            _navigationViewModel.SelectedViewModel = new EndScreenViewModel(_navigationViewModel, CorrectAnswer);
+            _navigationViewModel.SelectedViewModel = new EndScreenViewModel(_navigationViewModel, CorrectAnswer, CurrentTimer);
         }
 
         public List<string> QuestionsForView => _questions.Questions.Select(q => q.QuestionContent).ToList();
@@ -229,6 +242,7 @@ namespace Quiz.MVVM.ViewModel
 
             if (CurrentIndex+1 == questionListLength)
             {
+                _timer.Stop();
                 OpenEndScreenView();
             }
             else
