@@ -25,8 +25,8 @@ namespace Quiz.MVVM.ViewModel
         private bool _isC;
         private bool _isD;
         private bool _isAddButtonActive = true;
-        private bool _isRemoveButtonActive = true;
-        private bool _isEditButtonActive = true;
+        private bool _isRemoveButtonActive = false;
+        private bool _isEditButtonActive = false;
         private bool _isSaveQuestionButtonActive = false;
         private bool _isSaveAndQuitButtonActive = true;
 
@@ -53,6 +53,7 @@ namespace Quiz.MVVM.ViewModel
             EditQuestionCommand = new RelayCommand(EditQuestion);
             SaveQuestionCommand = new RelayCommand(SaveQuestion);
             SaveAndQuitCommand = new RelayCommand(SaveAndQuit);
+            SelectionChangedCommand = new RelayCommand(SelectionChanged);
         }
 
         public ICommand RemoveQuestionCommand { get; set; }
@@ -60,6 +61,7 @@ namespace Quiz.MVVM.ViewModel
         public ICommand EditQuestionCommand { get; set; }
         public ICommand SaveQuestionCommand { get; set; }
         public ICommand SaveAndQuitCommand { get; set; }
+        public ICommand SelectionChangedCommand { get; set; }
 
         public List<string> QuestionsForView => _questionTools.Questions.Select(q => q.QuestionContent).ToList();
         public int CurrentIndex { get; set; } = -1;
@@ -239,7 +241,7 @@ namespace Quiz.MVVM.ViewModel
 
             var message = (empty.Count < 2) ? "Pole: " : "Pola: ";
             message = empty.Aggregate(message, (current, s) => current + $"{s}, ");
-            message += "jest puste!";
+            message += (empty.Count < 2) ? "jest puste " : "są puste ";
             MessageBox.Show(message);
 
             return git;
@@ -307,8 +309,8 @@ namespace Quiz.MVVM.ViewModel
             IsA = true;
 
             IsAddButtonActive = true;
-            IsRemoveButtonActive = true;
-            IsEditButtonActive = true;
+            IsRemoveButtonActive = false;
+            IsEditButtonActive = false;
             IsSaveQuestionButtonActive = false;
             IsSaveAndQuitButtonActive = true;
         }
@@ -316,6 +318,11 @@ namespace Quiz.MVVM.ViewModel
         {
             _questionTools.Save();
             _navigationViewModel.SelectedViewModel = new MenuViewModel(_navigationViewModel);
+        }
+        private void SelectionChanged(object obj)
+        {
+            IsRemoveButtonActive = true;
+            IsEditButtonActive = true;
         }
     }
 }

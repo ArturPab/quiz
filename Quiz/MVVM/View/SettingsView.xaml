@@ -56,6 +56,11 @@
             </Grid>
         </StackPanel>
         <ListBox Grid.Column="1" ItemsSource="{Binding QuestionsForView}" SelectedIndex="{Binding CurrentIndex}">
+            <b:Interaction.Triggers>
+                <b:EventTrigger EventName="SelectionChanged">
+                    <b:InvokeCommandAction Command="{Binding SelectionChangedCommand}"/>
+                </b:EventTrigger>
+            </b:Interaction.Triggers>
         </ListBox>
     </Grid>
 </UserControl>
