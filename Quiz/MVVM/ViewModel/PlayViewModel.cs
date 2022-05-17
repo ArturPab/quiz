@@ -33,6 +33,7 @@ namespace Quiz.MVVM.ViewModel
         private string _IsCorrectAnswerD = "0";
         private readonly NavigationViewModel _navigationViewModel;
         private readonly DispatcherTimer _timer;
+        public bool Answered { get; set; } = false;
 
         public string CorrectAnswerCounter
         {
@@ -224,30 +225,35 @@ namespace Quiz.MVVM.ViewModel
 
         private async void CheckAnswer(object param)
         {
-            string? answer = param as string;
-            var correctAnswer = _questions.Questions[CurrentIndex].CorrectAnswer;
-            int questionListLength = _questions.Questions.Count;
-            if (answer == correctAnswer)
+            if (!Answered)
             {
-                CorrectAnswer += 1;
-                CorrectAnswerCounter = $"Poprawe odpowiedzi: {CorrectAnswer}";
-            }
+                Answered = true;
+                string? answer = param as string;
+                var correctAnswer = _questions.Questions[CurrentIndex].CorrectAnswer;
+                int questionListLength = _questions.Questions.Count;
+                if (answer == correctAnswer)
+                {
+                    CorrectAnswer += 1;
+                    CorrectAnswerCounter = $"Poprawe odpowiedzi: {CorrectAnswer}";
+                }
 
-            ChangeColorValue(answer, AnswerA, correctAnswer);
-            ChangeColorValue(answer, AnswerB, correctAnswer);
-            ChangeColorValue(answer, AnswerC, correctAnswer);
-            ChangeColorValue(answer, AnswerD, correctAnswer);
+                ChangeColorValue(answer, AnswerA, correctAnswer);
+                ChangeColorValue(answer, AnswerB, correctAnswer);
+                ChangeColorValue(answer, AnswerC, correctAnswer);
+                ChangeColorValue(answer, AnswerD, correctAnswer);
 
-            await Task.Delay(2000);
+                await Task.Delay(2000);
+                Answered = false;
 
-            if (CurrentIndex+1 == questionListLength)
-            {
-                _timer.Stop();
-                OpenEndScreenView();
-            }
-            else
-            {
-                nextQuestion();
+                if (CurrentIndex + 1 == questionListLength)
+                {
+                    _timer.Stop();
+                    OpenEndScreenView();
+                }
+                else
+                {
+                    nextQuestion();
+                }
             }
         }
 
