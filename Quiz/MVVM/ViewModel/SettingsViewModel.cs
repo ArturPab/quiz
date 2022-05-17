@@ -253,6 +253,7 @@ namespace Quiz.MVVM.ViewModel
             _questionTools.Questions.RemoveAt(CurrentIndex);
             CurrentIndex = -1;
             OnPropertyChanged(nameof(QuestionsForView));
+            ClearScreen();
         }
         private void EditQuestion(object obj)
         {
